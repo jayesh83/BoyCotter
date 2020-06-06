@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">BoyCotter</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="hello_monkey">Hello Monkey</string>
+    <string name="installed_apps">Installed Chinese Apps</string>
+    <string name="chinese_apps">Chinese apps</string>
+    <string name="all_apps">All apps</string>
+    <string name="icon_desc">This app is made in or belong to china in some or other way</string>
+    <string name="boiler_appName">XYZ app</string>
+    <string name="alternative_of_xyz_app">Recommended Alternatives</string>
+    <string name="uninstall">Uninstall</string>
+    <string name="_4_5_5">4.5/5</string>
+    <string name="_4m">4M+</string>
+    <string name="alternative_app">Alternative app</string>
+    <string name="_4_5">4.5</string>
+    <string name="install">Install</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="no_internet_connection">"  No internet connection  "</string>
+    <string name="install_alternatives">Install Alternatives</string>
+    <string name="install_alternative_text">Once this app is uninstalled, you will not see any suggestions related to it</string>
+    <string name="alert_positive_text">Ok, I understand</string>
+    <string name="boycotter">Boycotter</string>
+    <string name="text_boycott">Congratulations on your very first step\ntowards boycott</string>
+</resources>
