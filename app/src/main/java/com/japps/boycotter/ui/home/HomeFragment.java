@@ -15,26 +15,24 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.navigation.NavController;
-import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.japps.boycotter.MyApplication;
 import com.japps.boycotter.R;
-import com.japps.boycotter.UninstallerArgs;
 import com.japps.boycotter.adapters.InstalledAppsListAdapter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.japps.boycotter.MyApplication.TOTAL_INSTALLED_CHINESE_APPS;
 import static com.japps.boycotter.MyApplication.getExecutor;
 
 public class HomeFragment extends Fragment implements InstalledAppsListAdapter.onUninstallClickListener {
 
     RecyclerView recyclerView;
-    InstalledAppsListAdapter adapter;
     ChineseAppsViewModel viewModel;
     ArrayList<String> installed_chini_apps;
     ArrayList<String> installed_chini_apps_package;
@@ -85,6 +83,7 @@ public class HomeFragment extends Fragment implements InstalledAppsListAdapter.o
                             chinese_installed_apps_icons.add(app_icon);
                         }
                 }
+                TOTAL_INSTALLED_CHINESE_APPS = chinese_installed_apps_names.size();
                 viewModel.setInstalled_chinese_apps_name(chinese_installed_apps_names);
                 viewModel.setInstalled_chinese_apps_package(chinese_installed_apps_package_names);
                 viewModel.setInstalled_chinese_apps_icons(chinese_installed_apps_icons);
@@ -118,6 +117,7 @@ public class HomeFragment extends Fragment implements InstalledAppsListAdapter.o
 
     @Override
     public void onUninstall(int position, String packageId) {
+        // *** check in the hashMap if the packageId has some alternatives then pass it with the fragment arguments ****
         NavController controller = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
         HomeFragmentDirections.ActionNavigationHomeToUninstaller2 directions = HomeFragmentDirections.actionNavigationHomeToUninstaller2();
         String[] pkgs = {"sid.com.quotely", "com.whatsapp"};
@@ -125,4 +125,5 @@ public class HomeFragment extends Fragment implements InstalledAppsListAdapter.o
         directions.setPackages(pkgs);
         controller.navigate(directions);
     }
+    // TODO: a shared preference which keep the count of uninstalled apps
 }

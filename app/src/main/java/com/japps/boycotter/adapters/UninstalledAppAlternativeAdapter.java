@@ -18,6 +18,7 @@ import java.util.ArrayList;
 public class UninstalledAppAlternativeAdapter extends RecyclerView.Adapter<UninstalledAppAlternativeAdapter.AlternativeAppVH> {
     ArrayList<String> altrAppNames, alterAppPackages, alterAppStars, alterAppDownloads;
     ArrayList<String> alterAppIcons;
+    private onInstallClickListener listener;
 
     public UninstalledAppAlternativeAdapter(ArrayList<String> altrAppNames,
                                             ArrayList<String> alterAppPackages, ArrayList<String> alterAppStars,
@@ -66,7 +67,23 @@ public class UninstalledAppAlternativeAdapter extends RecyclerView.Adapter<Unins
             star = itemView.findViewById(R.id.alter_app_star);
             downloads = itemView.findViewById(R.id.alter_app_downloads);
             icon = itemView.findViewById(R.id.alter_app_icon);
-            installBtn = itemView.findViewById(R.id.app_uninstall_btn);
+            installBtn = itemView.findViewById(R.id.app_install_btn);
+            installBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null)
+                        listener.installClickListener(alterAppPackages.get(getAdapterPosition()));
+                }
+            });
         }
     }
+
+    public void setOnInstallClickListener(onInstallClickListener listener){
+        this.listener = listener;
+    }
+
+    public interface onInstallClickListener{
+        void installClickListener(String appToInstall);
+    }
+
 }

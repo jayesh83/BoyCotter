@@ -2,13 +2,7 @@ package com.japps.boycotter;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.view.LayoutInflater;
-
-import androidx.appcompat.app.AlertDialog;
-
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.dialog.MaterialDialogs;
+import android.content.SharedPreferences;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -16,6 +10,10 @@ import java.util.concurrent.Executors;
 public class MyApplication extends Application {
     private static ExecutorService appProcessor;
     public static boolean activeInternet;
+
+    public static String BOYCOTT_PREFERENCE_KEY = "com.japps.boycotter.SCORE_PREFERENCE";
+    public static String BOYCOTT_SCORE_KEY = "com.japps.boycotter.BOYCOTTER_SCORE";
+    public static int TOTAL_INSTALLED_CHINESE_APPS = 0;
 
     public static String[] chini_apps = {"TikTok", "LIKE", "Kwai", "Weibo", "WeChat", "SHAREit", "Truecaller", "UC News", "UCBrowser",
             "UCBrowser mini", "LiveMe", "Bigo Live", "Vigo Video", "BeautyPlus", "Xender", "Cam Scanner", "PUBG", "Clash of Kings",

@@ -3,6 +3,7 @@ package com.japps.boycotter;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -33,11 +34,13 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.japps.boycotter.adapters.UninstalledAppAlternativeAdapter;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -46,10 +49,12 @@ import java.util.ArrayList;
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_FIRST_USER;
 import static android.app.Activity.RESULT_OK;
+import static com.japps.boycotter.MyApplication.BOYCOTT_PREFERENCE_KEY;
+import static com.japps.boycotter.MyApplication.BOYCOTT_SCORE_KEY;
 import static com.japps.boycotter.MyApplication.activeInternet;
 import static com.japps.boycotter.MyApplication.getExecutor;
 
-public class Uninstaller extends Fragment implements Response.ErrorListener, Response.Listener<JSONObject>, View.OnClickListener {
+public class Uninstaller extends Fragment implements Response.ErrorListener, Response.Listener<JSONArray>, View.OnClickListener, UninstalledAppAlternativeAdapter.onInstallClickListener {
     public Uninstaller() {
     }
 
@@ -89,24 +94,29 @@ public class Uninstaller extends Fragment implements Response.ErrorListener, Res
                     appToUninstall = UninstallerArgs.fromBundle(getArguments()).getAppToUninstall();
                 }
 
-                if (appsToFetch != null && appsToFetch.length != 0) {
-                    if (!activeInternet)
-                        return;
-
+//                if (appsToFetch != null && appsToFetch.length != 0) {
+//                    if (!activeInternet)
+//                        return;
+//
                     if (requestQueue == null)
                         requestQueue = Volley.newRequestQueue(requireContext());
-
-                    for (String toFetch : appsToFetch) {
-                        // generate network call for each app
-                        String url = baseURL + toFetch;
-
-                        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+//
+//                    for (String toFetch : appsToFetch) {
+//                        // generate network call for each app
+//                        String url = baseURL + toFetch;
+//
+//                        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+//                                Uninstaller.this, Uninstaller.this);
+//                        request.setTag(REQ_TAG);
+//                        requestQueue.add(request);
+//                    }
+//                } else
+//                    Toast.makeText(requireActivity().getApplicationContext(), "No alternative recommendation", Toast.LENGTH_SHORT).show();
+                String url = baseURL + appToUninstall;
+                JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                                 Uninstaller.this, Uninstaller.this);
                         request.setTag(REQ_TAG);
                         requestQueue.add(request);
-                    }
-                } else
-                    Toast.makeText(requireActivity().getApplicationContext(), "No alternative recommendation", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -131,6 +141,8 @@ public class Uninstaller extends Fragment implements Response.ErrorListener, Res
         ImageView appIcon = view.findViewById(R.id.uninstalling_app_icon);
         Button appUninstallBtn = view.findViewById(R.id.uninstalling_app_btn);
         appUninstallBtn.setOnClickListener(this);
+        Button appInstallBtn = view.findViewById(R.id.app_install_btn);
+//        appInstallBtn.setOnInstallClickListener(this);
         PackageManager packageManager = requireActivity().getPackageManager();
 
         try {
@@ -161,6 +173,47 @@ public class Uninstaller extends Fragment implements Response.ErrorListener, Res
             view.findViewById(R.id.text_noInternet).setVisibility(View.VISIBLE);
         adapter = new UninstalledAppAlternativeAdapter(names, packages, stars, downloads, icons);
         recyclerView.setAdapter(adapter);
+
+        adapter.setOnInstallClickListener(Uninstaller.this);
+    }
+
+    @Override
+    public void installClickListener(String appToInstall) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(
+                "https://play.google.com/store/apps/details?id="+appToInstall));
+        intent.setPackage("com.android.vending");
+        startActivity(intent);
+        Log.e("Install ", ""+appToInstall);
+    }
+
+    @Override
+    public void onResponse(JSONArray response) {
+        if (response.length() != 0)
+            for (int i=0; i < response.length(); i++) {
+                try {
+                    JSONObject object = response.getJSONObject(i);
+
+                    String icon = object.has("icon") ? object.getString("icon") : "";
+                    String title = object.has("title") ? object.getString("title") : "";
+                    String packageId = object.has("appId") ? object.getString("appId") : "";
+                    String installs = object.has("installs") ? object.getString("installs") : "";
+                    String scoreText = object.has("scoreText") ? object.getString("scoreText") : "";
+
+                    names.add(title);
+                    icons.add(icon);
+                    packages.add(packageId);
+                    downloads.add(installs);
+                    stars.add(scoreText);
+                    adapter.notifyDataSetChanged();
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        else
+            customToast("No response", Toast.LENGTH_SHORT, TOAST_FAIL);
+        Log.e("RESPONSE", " - " + response);
     }
 
     @Override
@@ -168,28 +221,6 @@ public class Uninstaller extends Fragment implements Response.ErrorListener, Res
         Log.e("ERROR", " - " + error);
         if (error instanceof TimeoutError)
             Toast.makeText(requireActivity().getApplicationContext(), "Server not responding", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onResponse(JSONObject response) {
-        try {
-            String icon = response.has("icon") ? response.getString("icon") : "";
-            String title = response.has("title") ? response.getString("title") : "";
-            String packageId = response.has("appId") ? response.getString("appId") : "";
-            String installs = response.has("installs") ? response.getString("installs") : "";
-            String scoreText = response.has("scoreText") ? response.getString("scoreText") : "";
-
-            names.add(title);
-            icons.add(icon);
-            packages.add(packageId);
-            downloads.add(installs);
-            stars.add(scoreText);
-            adapter.notifyDataSetChanged();
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        Log.e("RESPONSE", " - " + response);
     }
 
     private boolean warningDownloadSuggestedAppFirstShown;
@@ -218,7 +249,13 @@ public class Uninstaller extends Fragment implements Response.ErrorListener, Res
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == UNINSTALL_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
+                int netScore;
                 customToast("Successfully uninstalled", Toast.LENGTH_SHORT, TOAST_SUCCESS);
+                SharedPreferences preferences = requireContext().getSharedPreferences(BOYCOTT_PREFERENCE_KEY, Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor  = preferences.edit();
+                netScore = preferences.getInt(BOYCOTT_SCORE_KEY, 0);
+                editor.putInt( BOYCOTT_SCORE_KEY, ( netScore + 1 ) );
+                editor.apply();
                 Log.e("TAG", "onActivityResult: user accepted the (un)install");
             } else if (resultCode == RESULT_CANCELED) {
                 Log.e("TAG", "onActivityResult: user canceled the (un)install");

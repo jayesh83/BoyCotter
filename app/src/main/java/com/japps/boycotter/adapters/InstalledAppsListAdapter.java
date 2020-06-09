@@ -16,6 +16,7 @@ import com.japps.boycotter.R;
 import java.util.ArrayList;
 
 public class InstalledAppsListAdapter extends RecyclerView.Adapter<InstalledAppsListAdapter.InstalledAppsListViewHolder> {
+
     private ArrayList<String> installed_chini_apps;
     private ArrayList<String> installed_chini_apps_package;
     private ArrayList<Drawable> installed_chini_apps_icon;

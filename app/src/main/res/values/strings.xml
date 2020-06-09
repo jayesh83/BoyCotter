@@ -24,4 +24,17 @@
     <string name="alert_positive_text">Ok, I understand</string>
     <string name="boycotter">Boycotter</string>
     <string name="text_boycott">Congratulations on your very first step\ntowards boycott</string>
+    <string name="iamboycotter">#iamboycotter</string>
+    <string name="score">Score</string>
+    <string name="share_to_the_world">Share to the world</string>
+    <string name="app_uninstall_count">App uninstall count</string>
+    <string name="victory">Victory!</string>
+    <string name="share_body_text">First step towards boycott\nUninstalled Chinese apps using Boycotter.   #bulletSeNahiWalletSe</string>
+    <string name="share_boycott_score">Share boycott score</string>
+    <string name="congrats">Congratulations!</string>
+    <string name="no_way">No way!</string>
+    <string name="sorry_to_say">SORRY TO SAY</string>
+    <string name="no_apps_installed">You have not uninstalled any app(s)</string>
+    <string name="its_amazing">It\'s amazing</string>
+    <string name="wow">Wow! You have not installed any Chinese app(s)</string>
 </resources>

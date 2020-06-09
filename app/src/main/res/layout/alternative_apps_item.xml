@@ -46,7 +46,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/app_uninstall_btn"
+            android:id="@+id/app_install_btn"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="100dp"
             android:layout_height="wrap_content"

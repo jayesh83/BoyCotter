@@ -19,7 +19,7 @@
     <fragment
         android:id="@+id/navigation_dashboard"
         android:name="com.japps.boycotter.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
+        android:label="Appreciation"
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
@@ -31,7 +31,7 @@
     <fragment
         android:id="@+id/uninstaller"
         android:name="com.japps.boycotter.Uninstaller"
-        android:label="fragment_uninstaller"
+        android:label="Boycott"
         tools:layout="@layout/fragment_uninstaller" >
         <argument
             android:name="packages"
