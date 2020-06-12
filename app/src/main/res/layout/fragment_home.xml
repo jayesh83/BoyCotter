@@ -7,7 +7,7 @@
     tools:context=".ui.home.HomeFragment">
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/apps_selection"
+        android:id="@+id/home_header"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
@@ -40,7 +40,18 @@
         tools:listitem="@layout/installed_apps_item"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/apps_selection"
+        app:layout_constraintTop_toBottomOf="@+id/home_header"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <ViewStub
+        android:id="@+id/viewstub_no_apps"
+        android:inflatedId="@+id/inflated_viewstub_no_apps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout="@layout/layout_no_apps"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/home_header"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

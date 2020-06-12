@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Uninstaller">
+    tools:context=".ui.Uninstaller">
 
     <ImageView
         android:id="@+id/uninstalling_app_icon"
@@ -75,6 +75,16 @@
         android:textStyle="bold"
         android:visibility="gone"
         android:drawableStart="@drawable/ic_wifi_off_24px"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_alternative"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <ViewStub
+        android:id="@+id/viewstub_no_alternative"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout="@layout/layout_no_alternative"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_alternative"

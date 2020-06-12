@@ -1,8 +1,6 @@
 package com.japps.boycotter;
 
 import android.app.Application;
-import android.content.Context;
-import android.content.SharedPreferences;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -11,11 +9,12 @@ public class MyApplication extends Application {
     private static ExecutorService appProcessor;
     public static boolean activeInternet;
 
-    public static String BOYCOTT_PREFERENCE_KEY = "com.japps.boycotter.SCORE_PREFERENCE";
-    public static String BOYCOTT_SCORE_KEY = "com.japps.boycotter.BOYCOTTER_SCORE";
+    public static final String BOYCOTT_PREFERENCE_KEY = "com.japps.boycotter.SCORE_PREFERENCE";
+    public static final String BOYCOTT_SCORE_KEY = "com.japps.boycotter.BOYCOTTER_SCORE";
     public static int TOTAL_INSTALLED_CHINESE_APPS = 0;
+    public static final String baseURL = "http://192.168.43.37:3000/appId/";
 
-    public static String[] chini_apps = {"TikTok", "LIKE", "Kwai", "Weibo", "WeChat", "SHAREit", "Truecaller", "UC News", "UCBrowser",
+    public static final String[] chini_apps = {"TikTok", "LIKE", "Couple Suit", "Ludo", "Anim", "AppBarLearning", "Kwai", "Weibo", "WeChat", "SHAREit", "Truecaller", "UC News", "UCBrowser",
             "UCBrowser mini", "LiveMe", "Bigo Live", "Vigo Video", "BeautyPlus", "Xender", "Cam Scanner", "PUBG", "Clash of Kings",
             "Mobile Legends", "ClubFactory", "Shein", "Romwe", "AppLock", "Club Factory", "VMate", "Game of Sultans",
             "Mafia City", "Battle of Empires", "Vigo lite", "LivU", "Live Chat", "Guns of Glory", "Zak Zak Pro", "Turbo VPN",

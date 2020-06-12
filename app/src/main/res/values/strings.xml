@@ -16,7 +16,6 @@
     <string name="alternative_app">Alternative app</string>
     <string name="_4_5">4.5</string>
     <string name="install">Install</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="no_internet_connection">"  No internet connection  "</string>
     <string name="install_alternatives">Install Alternatives</string>
@@ -24,7 +23,7 @@
     <string name="alert_positive_text">Ok, I understand</string>
     <string name="boycotter">Boycotter</string>
     <string name="text_boycott">Congratulations on your very first step\ntowards boycott</string>
-    <string name="iamboycotter">#iamboycotter</string>
+    <string name="iamboycotter">#iamboycotter\n#boycotterApp</string>
     <string name="score">Score</string>
     <string name="share_to_the_world">Share to the world</string>
     <string name="app_uninstall_count">App uninstall count</string>
@@ -35,6 +34,20 @@
     <string name="no_way">No way!</string>
     <string name="sorry_to_say">SORRY TO SAY</string>
     <string name="no_apps_installed">You have not uninstalled any app(s)</string>
-    <string name="its_amazing">It\'s amazing</string>
-    <string name="wow">Wow! You have not installed any Chinese app(s)</string>
+    <string name="_amazing">Amazing</string>
+    <string name="wow">Wow! No Chinese app(s) installed on your device </string>
+    <string name="go_to_score_board">Go to score board</string>
+    <string name="no_chinese_app_s_found">No Chinese app(s) found</string>
+    <string name="server_not_responding">Server not responding</string>
+    <string name="no_response">No response</string>
+    <string name="uninstall_success">Uninstall success</string>
+    <string name="uninstall_failed">Uninstall failed</string>
+    <string name="uninstalled_chinese_apps_s">Uninstalled Chinese apps(s)</string>
+    <string name="appreciation">Appreciation</string>
+    <string name="all_the_chinese_apps_have_been_uninstalled">All the Chinese apps have been uninstalled</string>
+    <string name="no_alternatives_available">"  No alternatives available"</string>
+    <string-array name="credits">
+        <item>Icon Medal By Eucalyp from www.flaticon.com</item>
+        <item>Icon Calm by Becris from www.flaticon.com</item>
+    </string-array>
 </resources>

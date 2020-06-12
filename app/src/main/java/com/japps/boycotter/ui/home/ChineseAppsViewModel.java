@@ -1,6 +1,7 @@
 package com.japps.boycotter.ui.home;
 
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -37,6 +38,31 @@ public class ChineseAppsViewModel extends ViewModel {
     public void setInstalled_chinese_apps_icons(ArrayList<Drawable> installed_chinese_apps_icons) {
         this.installed_chinese_apps_icons.postValue(installed_chinese_apps_icons);
     }
+
+    public boolean removeApp(int appPos){
+        String[] results = new String[2];
+        Drawable icon = null;
+        ArrayList<String> nameList = installed_chinese_apps_name.getValue();
+        ArrayList<String> pkgList = installed_chinese_apps_package.getValue();
+        ArrayList<Drawable> drawables = installed_chinese_apps_icons.getValue();
+
+        if (nameList != null && pkgList != null && drawables != null){
+            results[0] = nameList.remove(appPos);
+            results[1] = pkgList.remove(appPos);
+            icon = drawables.remove(appPos);
+        }
+
+        boolean isAppRemoved = results[0] != null && results[1] != null && icon != null;
+
+        if (isAppRemoved){
+            setInstalled_chinese_apps_name(nameList);
+            setInstalled_chinese_apps_package(pkgList);
+            setInstalled_chinese_apps_icons(drawables);
+        }
+
+        return isAppRemoved;
+    }
+
     public static ChineseAppsViewModel getInstance(){
         if (viewModel == null){
             viewModel = new ChineseAppsViewModel();

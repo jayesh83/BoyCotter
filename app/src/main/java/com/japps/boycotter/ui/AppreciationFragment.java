@@ -1,12 +1,11 @@
-package com.japps.boycotter.ui.dashboard;
+package com.japps.boycotter.ui;
 
+import android.content.ClipData;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -14,18 +13,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.FileProvider;
+import androidx.core.content.MimeTypeFilter;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.japps.boycotter.R;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.MessageFormat;
@@ -34,10 +34,13 @@ import static com.japps.boycotter.MyApplication.BOYCOTT_PREFERENCE_KEY;
 import static com.japps.boycotter.MyApplication.BOYCOTT_SCORE_KEY;
 import static com.japps.boycotter.MyApplication.TOTAL_INSTALLED_CHINESE_APPS;
 
-public class DashboardFragment extends Fragment implements View.OnClickListener {
+public class AppreciationFragment extends Fragment implements View.OnClickListener {
     private File imagePath;
 
-    public DashboardFragment(){};
+    public AppreciationFragment() {
+    }
+
+    ;
     private Button shareBtn;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -61,17 +64,18 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
         SharedPreferences preferences = requireContext().getSharedPreferences(BOYCOTT_PREFERENCE_KEY, Context.MODE_PRIVATE);
         netScore = preferences.getInt(BOYCOTT_SCORE_KEY, 0);
 
-        if (TOTAL_INSTALLED_CHINESE_APPS > 0){
-            if (netScore <= 0){
+        if (TOTAL_INSTALLED_CHINESE_APPS > 0) {
+            if (netScore <= 0) {
                 appreciation_text.setText(R.string.no_way);
                 boycotter_txt.setText(R.string.sorry_to_say);
                 boycotter_long_txt.setText(R.string.no_apps_installed);
             }
-        }else {
-            appreciation_text.setText(R.string.its_amazing);
+        } else {
+            appreciation_text.setText(R.string._amazing);
             boycotter_long_txt.setText(R.string.wow);
         }
-        score.setText(MessageFormat.format("{0}", (netScore * 100 )) );
+
+        score.setText(MessageFormat.format("{0}", (netScore * 100)));
         uninstallCount.setText(MessageFormat.format("{0}", netScore));
     }
 
@@ -81,7 +85,7 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
             takeAndShareScreenshot();
     }
 
-    private void takeAndShareScreenshot(){
+    private void takeAndShareScreenshot() {
         Bitmap ss = takeScreenshot();
         saveBitmap(ss);
         shareIt();
@@ -113,7 +117,8 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
 
     private void shareIt() {
         try {
-            Uri uri = Uri.fromFile(imagePath);
+
+            Uri uri = FileProvider.getUriForFile(requireContext(), "com.japps.boycotter.fileprovider", imagePath);
             Intent sharingIntent = new Intent(Intent.ACTION_SEND);
             sharingIntent.setType("image/*");
             String shareBody = getString(R.string.share_body_text);
@@ -121,9 +126,10 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
             sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
             sharingIntent.putExtra(Intent.EXTRA_STREAM, uri);
 
-            startActivity(Intent.createChooser(sharingIntent, "Share Boycott score via"));
+            Intent chooserIntent = Intent.createChooser(sharingIntent, "Share Boycott score via");
+            startActivity(chooserIntent);
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e("Exception", "" + e.toString());
         }
     }
 }
