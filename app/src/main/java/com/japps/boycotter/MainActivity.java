@@ -61,7 +61,6 @@ public class MainActivity extends AppCompatActivity {
 
         NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
-//        navView.setOnNavigationItemSelectedListener(this);
     }
 
     private void changeStartDestination(int totalInstalledChineseApps) {

@@ -1,7 +1,5 @@
 package com.japps.boycotter.ui;
 
-import android.content.ClipData;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,14 +11,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
-import androidx.core.content.MimeTypeFilter;
 import androidx.fragment.app.Fragment;
 
 import com.japps.boycotter.R;
@@ -40,7 +36,6 @@ public class AppreciationFragment extends Fragment implements View.OnClickListen
     public AppreciationFragment() {
     }
 
-    ;
     private Button shareBtn;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -71,7 +66,9 @@ public class AppreciationFragment extends Fragment implements View.OnClickListen
                 boycotter_long_txt.setText(R.string.no_apps_installed);
             }
         } else {
+            // TODO: if person has zero chinese apps installed then don't show score
             appreciation_text.setText(R.string._amazing);
+            boycotter_txt.setText(R.string.no_chinese_apps);
             boycotter_long_txt.setText(R.string.wow);
         }
 

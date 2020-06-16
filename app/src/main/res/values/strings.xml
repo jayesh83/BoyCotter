@@ -46,6 +46,7 @@
     <string name="appreciation">Appreciation</string>
     <string name="all_the_chinese_apps_have_been_uninstalled">All the Chinese apps have been uninstalled</string>
     <string name="no_alternatives_available">"  No alternatives available"</string>
+    <string name="no_chinese_apps">No Chinese app(s)</string>
     <string-array name="credits">
         <item>Icon Medal By Eucalyp from www.flaticon.com</item>
         <item>Icon Calm by Becris from www.flaticon.com</item>

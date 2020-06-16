@@ -3,13 +3,7 @@
     android:opacity="opaque">
 
     <item android:drawable="@color/white" />
-    <!--    <item>-->
-    <!--        <bitmap-->
-    <!--            android:gravity="center"-->
-    <!--            android:src="@drawable/ic_calm" />-->
-    <!--    </item>-->
-
-    <item
-        android:drawable="@drawable/ic_medal"
-        android:gravity="center" />
+        <item android:drawable="@drawable/ic_untitled"
+            android:gravity="center"
+            />
 </layer-list>

@@ -77,6 +77,9 @@ public class Uninstaller extends Fragment implements Response.ErrorListener, Res
     private ProgressBar bar = null;
     private int progress;
 
+    private ProgressBar contentLoadingBar;
+    TextView txtNoInternet;
+
     private final String TOAST_SUCCESS = "success";
     private final String TOAST_FAIL = "fail";
 
@@ -95,7 +98,7 @@ public class Uninstaller extends Fragment implements Response.ErrorListener, Res
         getExecutor().execute(new Runnable() {
             @Override
             public void run() {
-                if (args != null){
+                if (args != null) {
                     appToUninstall = UninstallerArgs.fromBundle(args).getAppToUninstall();
                     appPos = UninstallerArgs.fromBundle(args).getAppPos();
                 }
@@ -125,6 +128,8 @@ public class Uninstaller extends Fragment implements Response.ErrorListener, Res
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        contentLoadingBar = view.findViewById(R.id.alternative_loadingBar);
+
         TextView appName = view.findViewById(R.id.uninstalling_app_name);
         ImageView appIcon = view.findViewById(R.id.uninstalling_app_icon);
 
@@ -148,17 +153,18 @@ public class Uninstaller extends Fragment implements Response.ErrorListener, Res
         appName.setText(uninstallingAppName);
         appIcon.setImageDrawable(uninstallingAppIcon);
 
-        TextView txtNoInternet = view.findViewById(R.id.text_noInternet);
+        txtNoInternet = view.findViewById(R.id.text_noInternet);
 
-        if (txtNoInternet.getVisibility() == View.VISIBLE)
-            txtNoInternet.setVisibility(View.GONE);
+        if (!activeInternet){
+            txtNoInternet.setVisibility(View.VISIBLE);
+            contentLoadingBar.setVisibility(View.GONE);
+        }else
+            contentLoadingBar.setVisibility(View.VISIBLE);
 
         RecyclerView recyclerView = view.findViewById(R.id.list_alternative_of_uninstalled);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext());
 
         recyclerView.setLayoutManager(layoutManager);
-        if (!activeInternet)
-            view.findViewById(R.id.text_noInternet).setVisibility(View.VISIBLE);
         adapter = new UninstalledAppAlternativeAdapter(names, packages, stars, downloads, icons);
         recyclerView.setAdapter(adapter);
 
@@ -177,6 +183,7 @@ public class Uninstaller extends Fragment implements Response.ErrorListener, Res
 
     @Override
     public void onResponse(JSONArray response) {
+        contentLoadingBar.setVisibility(View.GONE);
         if (response.length() != 0)
             for (int i = 0; i < response.length(); i++) {
                 try {
@@ -206,14 +213,22 @@ public class Uninstaller extends Fragment implements Response.ErrorListener, Res
 
     @Override
     public void onErrorResponse(VolleyError error) {
+        contentLoadingBar.setVisibility(View.GONE);
         Log.e("ERROR", " - " + error);
 
         if (error instanceof TimeoutError)
             customToast(getString(R.string.server_not_responding), Toast.LENGTH_SHORT, TOAST_FAIL);
 
-        if (new String(error.networkResponse.data, Charset.defaultCharset()).equals("NOTFOUND")){
-            ViewStub stub = requireView().findViewById(R.id.viewstub_no_alternative);
-            stub.inflate();
+        if (error.networkResponse != null) {
+            String data = new String(error.networkResponse.data, Charset.defaultCharset());
+
+            if (data.equals("NOTFOUND")) {
+                if (txtNoInternet != null)
+                    txtNoInternet.setVisibility(View.GONE);
+                ViewStub stub = requireView().findViewById(R.id.viewstub_no_alternative);
+                stub.inflate();
+            }
+
         }
     }
 

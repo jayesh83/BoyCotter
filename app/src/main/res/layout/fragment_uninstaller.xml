@@ -80,6 +80,16 @@
         app:layout_constraintTop_toBottomOf="@+id/txt_alternative"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
+    <ProgressBar
+        android:id="@+id/alternative_loadingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_alternative"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
     <ViewStub
         android:id="@+id/viewstub_no_alternative"
         android:layout_width="wrap_content"
